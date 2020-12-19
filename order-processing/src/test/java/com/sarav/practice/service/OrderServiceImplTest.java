@@ -16,7 +16,7 @@ import com.sarav.practice.exception.BusinessException;
 
 class OrderServiceImplTest {
     @Mock
- 	OrderDAO orderDao;
+ 	private OrderDAO orderDao;
     private OrderService service;
     private Order order; 
     
@@ -44,5 +44,14 @@ class OrderServiceImplTest {
     	});
     	verify(orderDao).create(order);
     }
+	
+	@Test
+	void shouldRetrieveOrder() throws SQLException, BusinessException {
+		when(orderDao.read(1)).thenReturn(order.setStatus("read"));
+		Order result = service.retrieveOrder(1);
+		order.setStatus("read");
+		assertEquals(order.getStatus(), result.getStatus());
+		verify(orderDao).read(1);		
+	}
     
 }
